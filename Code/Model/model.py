@@ -164,17 +164,17 @@ if __name__=="__main__":
 			predict = clf.fit(X[train], Y[train]).predict(X[test])
 			#fpr, tpr, thresholds = roc_curve(Y[test], probas_[:, 1])
 			fpr, tpr, thresholds = roc_curve(Y[test], predict)
-			mean_tpr += interp(mean_fpr, fpr, tpr)          #对mean_tpr在mean_fpr处进行插值，通过scipy包调用interp()函数  
-			mean_tpr[0] = 0.0                               #初始处为0
+			mean_tpr += interp(mean_fpr, fpr, tpr)          #Interpolate mean_tpr at mean_fpr and call the interp() function through the scipy package  
+			mean_tpr[0] = 0.0                               #The initial position is 0
 			roc_auc = auc(fpr, tpr)  
-			#画图，只需要plt.plot(fpr,tpr),变量roc_auc只是记录auc的值，通过auc()函数能计算出来  
+			#To draw a picture, only plt.plot(fpr, tpr) is needed, the variable roc_auc just records the value of auc, which can be calculated by the auc() function 
 			plt.plot(fpr, tpr, lw=1, label='ROC fold %d (area = %0.2f)' % (i, roc_auc))  
-			#画对角线  
+			#Draw diagonal lines
 			plt.plot([0, 1], [0, 1], '--', color=(0.6, 0.6, 0.6), label='Luck')  
-			mean_tpr /= len(cv)                     #在mean_fpr100个点，每个点处插值插值多次取平均  
-			mean_tpr[-1] = 1.0                      #坐标最后一个点为（1,1）  
-			mean_auc = auc(mean_fpr, mean_tpr)      #计算平均AUC值  
-			#画平均ROC曲线
+			mean_tpr /= len(cv)                     #100 points at mean_fpr, and interpolation at each point is averaged multiple times  
+			mean_tpr[-1] = 1.0                      #The last point of the coordinate is (1,1) 
+			mean_auc = auc(mean_fpr, mean_tpr)      #Calculate the average AUC value
+			#Draw average ROC curve
 			#print mean_fpr,len(mean_fpr)  
 			#print mean_tpr  
 			plt.plot(mean_fpr, mean_tpr, 'k--',  
